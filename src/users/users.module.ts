@@ -1,4 +1,3 @@
-// src/users/users.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/users.entity';
@@ -9,6 +8,9 @@ import { UsersService } from './users.service';
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UsersController],
   providers: [UsersService],
-  exports:[UsersService],//adicionar 
+  // ESTA LINHA É CRUCIAL.
+  // Ela torna o UsersService "público" para que outros módulos
+  // que importarem o UsersModule possam injetá-lo.
+  exports: [UsersService],
 })
-export class UsersModule {}              
+export class UsersModule {}

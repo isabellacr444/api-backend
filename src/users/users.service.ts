@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  findByEmail: any;
   constructor(
     @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
@@ -26,5 +25,7 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
   
-  // Adicionaremos mais métodos aqui depois
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    return this.usersRepository.findOneBy({ email });
+  }
 }
