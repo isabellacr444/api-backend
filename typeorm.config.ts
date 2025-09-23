@@ -7,7 +7,7 @@ export default new DataSource({
   port: 3306,
   username: 'root',
   password: '1234', // COLOQUE SUA SENHA AQUI
-  database: 'products2',
+  database: 'todo-backend2',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/src/migrations/*{.ts,.js}'],
 });
