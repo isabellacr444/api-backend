@@ -42,9 +42,9 @@ export class TasksService {
   async update(id: number, updateTaskDto: UpdateTaskDto): Promise<TaskEntity> {
     const task = await this.findOne(id);
 
-    const updated = Object.assign(task, updateTaskDto);
+    Object.assign(task, updateTaskDto);
 
-    return await this.tasksRepository.save(updated);
+    return await this.tasksRepository.save(task);
   }
 
   // Remover uma tarefa pelo ID

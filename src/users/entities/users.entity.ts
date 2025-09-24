@@ -1,9 +1,17 @@
-// src/users/entities/user.entity.ts
-import { ProductEntity } from '../../products/entities/products.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Role } from '../../common/enum/role.enum';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity({ name: 'users' })
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,13 +22,12 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({
-    type: 'enum',
-    enum: Role,
-    default: Role.User, // Todo novo usuário será 'user' por padrão
-  })
-  role: Role;
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role: UserRole;
 
-  @OneToMany(() => ProductEntity, (product) => product.user)
-  products: ProductEntity[];
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

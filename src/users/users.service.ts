@@ -1,31 +1,35 @@
-// src/users/users.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from './entities/users.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity, UserRole } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly usersRepository: Repository<UserEntity>,
+    private usersRepository: Repository<UserEntity>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    const { email, password } = createUserDto;
+
+    const existing = await this.usersRepository.findOne({ where: { email } });
+    if (existing) throw new ConflictException('Email já cadastrado.');
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = this.usersRepository.create({
-      ...createUserDto,
+      email,
       password: hashedPassword,
+      role: UserRole.USER,
     });
 
-    return await this.usersRepository.save(user);
+    return this.usersRepository.save(user);
   }
-  
+
   async findByEmail(email: string): Promise<UserEntity | null> {
-    return this.usersRepository.findOneBy({ email });
+    return this.usersRepository.findOne({ where: { email } });
   }
 }

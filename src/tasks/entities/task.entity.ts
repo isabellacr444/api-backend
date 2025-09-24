@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-// Enum dentro do mesmo arquivo
+
 export enum TaskStatus {
   PENDING = 'PENDING',
   DONE = 'DONE',
@@ -15,7 +15,7 @@ export enum TaskStatus {
 @Entity('tasks')
 export class TaskEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number;  // Number OK, mas UUID é recomendado para APIs REST públicas
 
   @Column({ type: 'varchar', length: 255 })
   title: string;

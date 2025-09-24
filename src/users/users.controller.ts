@@ -13,4 +13,4 @@ export class UsersController {
     const { password, ...result } = await this.usersService.create(createUserDto);
     return result;
   }
-}
+} 
