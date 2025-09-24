@@ -35,4 +35,5 @@ export class TaskEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+  user: any;
 }
